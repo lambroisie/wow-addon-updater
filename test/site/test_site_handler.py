@@ -7,6 +7,7 @@ from updater.site.enum import AddonVersion, GameVersion
 from updater.site.tukui import Tukui
 from updater.site.wowace import WoWAce
 from updater.site.wowinterface import WoWInterface
+from updater.site.townlongyak import Townlongyak
 
 
 class TestSiteHandler(unittest.TestCase):
@@ -38,6 +39,11 @@ class TestSiteHandler(unittest.TestCase):
         for url in Tukui.get_supported_urls():
             handler = site_handler.get_handler(url, GameVersion.retail)
             self.assertIsInstance(handler, Tukui)
+
+    def test_handles_townlongyak(self):
+        for url in Townlongyak.get_supported_urls():
+            handler = site_handler.get_handler(url, GameVersion.retail)
+            self.assertIsInstance(handler, Townlongyak)
 
 
 if __name__ == '__main__':

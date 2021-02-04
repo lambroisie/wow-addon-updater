@@ -66,18 +66,15 @@ def check_version():
     except Exception as e:
         logger.exception("Something went wrong finding the latest app version! "
                          "Please report this on GitHub and check for a new release.")
-
-
 def main():
     parser = argparse.ArgumentParser(description='Update your WoW addons.')
     parser.add_argument('-c', '--config', nargs='?', default='config.ini', type=str, metavar='FILE',
                         help='the file to be used for configuration')
     args = parser.parse_args()
 
-    try:
-        AddonManager(args.config).update_all()
-    except:
-        logger.exception("Something bad happened. Please check the logs.")
+    AddonManager(args.config).update_all()
+    #except:
+    #    logger.exception("Something bad happened. Please check the logs.")
 
     check_version()
 

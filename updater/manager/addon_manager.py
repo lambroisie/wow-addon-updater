@@ -13,7 +13,7 @@ from typing import List
 import requests
 from requests import HTTPError
 
-from updater.site import site_handler, github, tukui
+from updater.site import site_handler, github, tukui, townlongyak
 from updater.site.abstract_site import SiteError, AbstractSite
 from updater.site.enum import AddonVersion, GameVersion
 
@@ -53,8 +53,8 @@ class AddonManager:
         except Exception:
             error("Failed to parse configuration file. Are you sure it is formatted correctly?")
 
-        if not isfile(self.addon_list_file):
-            error(f"Failed to read addon list file ({self.addon_list_file}). Are you sure the file exists?")
+        #if not isfile(self.addon_list_file):
+            #error(f"Failed to read addon list file ({self.addon_list_file}). Are you sure the file exists?")
 
         self.wow_addon_location = normalize_path(self.wow_addon_location)
         if not isdir(self.wow_addon_location):
@@ -63,14 +63,13 @@ class AddonManager:
     def update_all(self):
         with open(self.addon_list_file, 'r') as fin:
             addon_entries = fin.read().splitlines()
-
         # filter any blank lines or lines commented with an octothorp (#)
         addon_entries = [entry for entry in addon_entries if entry and not entry.startswith('#')]
-
         # chose an arbitrary reasonable number of threads
         pool = ThreadPool(10)
         for addon_entry in addon_entries:
             pool.apply_async(self.update_addon, args=(addon_entry,))
+            print(addon_entry)
         pool.close()
         pool.join()
 
@@ -82,11 +81,8 @@ class AddonManager:
         # Expected format: "mydomain.com/myaddon" or "mydomain.com/myaddon|subfolder [version_track]"
         addon_entry, *addon_version_track = addon_entry.split(' ')
         addon_url, *subfolder = addon_entry.split('|')
-
         addon_version_track = self.validate_addon_version_track(addon_version_track)
-
         site = site_handler.get_handler(addon_url, self.game_version, addon_version_track)
-
         try:
             addon_name = site.get_addon_name()
         except Exception as e:

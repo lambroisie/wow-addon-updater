@@ -3,6 +3,7 @@ from updater.site.curse import Curse
 from updater.site.enum import AddonVersion, GameVersion
 from updater.site.github import GitHub
 from updater.site.tukui import Tukui
+from updater.site.townlongyak import Townlongyak
 from updater.site.wowace import WoWAce
 from updater.site.wowinterface import WoWInterface
 
@@ -23,6 +24,8 @@ def get_handler(url: str, game_version: GameVersion,
         return WoWInterface(url, game_version)
     elif GitHub.handles(url):
         return GitHub(url)
+    elif Townlongyak.handles(url):
+        return Townlongyak(url)
 
     # for subclass in Site.__subclasses__():
     #     if subclass.handles(url):

@@ -7,7 +7,7 @@ from unittest.mock import patch, Mock, MagicMock
 from test import testutils
 from updater.manager import addon_manager
 from updater.manager.addon_manager import AddonManager
-from updater.site import curse, github
+from updater.site import curse, github, townlongyak
 from updater.site.abstract_site import AbstractSite, SiteError
 from updater.site.enum import AddonVersion, GameVersion
 
